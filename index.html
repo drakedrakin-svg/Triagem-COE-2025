@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registro COE</title>
+  <style>
+    body{font-family:Arial;background:#0b0f14;color:#eaf0ff;margin:0;padding:24px}
+    .card{max-width:560px;margin:0 auto;background:#121a24;padding:20px;border-radius:14px;border:1px solid #223047}
+    h1{margin:0 0 10px 0;font-size:20px}
+    label{display:block;margin:12px 0 6px}
+    input,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #2a3a55;background:#0b0f14;color:#eaf0ff}
+    button{width:100%;margin-top:16px;padding:12px;border:0;border-radius:12px;background:#2b6fff;color:#fff;font-weight:700;cursor:pointer}
+    .ok{margin-top:12px;color:#7CFFB2}
+    .err{margin-top:12px;color:#FF7C7C}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>📋 Registro COE</h1>
+
+    <form id="f">
+      <label>Nome</label>
+      <input name="nome" required>
+
+      <label>Passaporte</label>
+      <input name="passaporte" required inputmode="numeric">
+
+      <label>Recrutador</label>
+      <input name="recrutador" required>
+
+      <label>ID Discord (opcional)</label>
+      <input name="discord_id" placeholder="123456789012345678" inputmode="numeric">
+
+      <button type="submit">Enviar</button>
+      <div id="msg"></div>
+    </form>
+  </div>
+
+<script>
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1450882766043353110/LkpOL01stYbDhvn0jSO7gDU77fZsCXoCcU-e80lhIseJfe9C4cmPj2LCFRSkAOsdRrun";
+const TRIAGEM_CHANNEL_ID = "1450882352137109544";
+
+document.getElementById("f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+
+  const nome = fd.get("nome").trim();
+  const passaporte = fd.get("passaporte").trim();
+  const recrutador = fd.get("recrutador").trim();
+  const discord_id = (fd.get("discord_id") || "").trim();
+  const mention = discord_id ? `<@${discord_id}>` : "—";
+
+  const payload = {
+    content: `🧠 **REGISTRO COE** → <#${TRIAGEM_CHANNEL_ID}>`,
+    embeds: [{
+      title: "Solicitação para Triagem",
+      description:
+        `👤 **Nome:** ${nome}\n`+
+        `🪪 **Passaporte:** ${passaporte}\n`+
+        `🎖️ **Recrutador:** ${recrutador}\n`+
+        `👥 **Discord:** ${mention}\n`,
+      footer: { text: "Use ✅ aprovar / ❌ reprovar (responda com o modelo padrão)." }
+    }]
+  };
+
+  const msg = document.getElementById("msg");
+  msg.textContent = "Enviando...";
+  msg.className = "";
+
+  try {
+    const r = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (!r.ok) throw new Error();
+    msg.textContent = "✅ Enviado para triagem!";
+    msg.className = "ok";
+    e.target.reset();
+  } catch {
+    msg.textContent = "❌ Erro ao enviar (webhook inválido).";
+    msg.className = "err";
+  }
+});
+</script>
+</body>
+</html>
