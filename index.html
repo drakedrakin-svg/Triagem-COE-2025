@@ -1,507 +1,51 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prova GATE - Sistema de Avaliação Seguro</title>
-<style>
-:root {
-  --bg-primary: #0a0e27;
-  --bg-secondary: #151b3d;
-  --bg-card: #1a2145;
-  --border: #2d3a6e;
-  --border-active: #4a5fa0;
-  --accent: #4c6fff;
-  --success: #00d4aa;
-  --error: #ff5757;
-  --warning: #ffb800;
-  --text-primary: #ffffff;
-  --text-secondary: #a8b3cf;
-  --shadow: rgba(0, 0, 0, 0.3);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, var(--bg-primary) 0%, #0f1435 100%);
-  color: var(--text-primary);
-  min-height: 100vh;
-  padding: 20px;
-  line-height: 1.6;
-}
-
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.header {
-  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
-  border: 2px solid var(--border);
-  border-radius: 20px;
-  padding: 30px;
-  margin-bottom: 25px;
-  box-shadow: 0 10px 30px var(--shadow);
-  text-align: center;
-}
-
-.header h1 {
-  font-size: 32px;
-  font-weight: 800;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, #4c6fff 0%, #00d4aa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.header p {
-  color: var(--text-secondary);
-  font-size: 16px;
-}
-
-.security-notice {
-  background: rgba(255, 184, 0, 0.15);
-  border: 2px solid var(--warning);
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 25px;
-  text-align: center;
-}
-
-.security-notice h3 {
-  color: var(--warning);
-  margin-bottom: 10px;
-  font-size: 18px;
-}
-
-.security-notice p {
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.info-bar {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.info-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 20px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.info-card:hover {
-  border-color: var(--border-active);
-  transform: translateY(-2px);
-}
-
-.info-card .label {
-  color: var(--text-secondary);
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-
-.info-card .value {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--accent);
-}
-
-.timer-display {
-  color: var(--warning);
-  font-size: 28px;
-}
-
-.timer-display.critical {
-  color: var(--error);
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-.input-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 25px;
-  margin-bottom: 25px;
-}
-
-.input-group {
-  margin-bottom: 20px;
-}
-
-.input-group:last-child {
-  margin-bottom: 0;
-}
-
-.input-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 14px 18px;
-  background: var(--bg-secondary);
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  color: var(--text-primary);
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-.input-group input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(76, 111, 255, 0.1);
-}
-
-.question-card {
-  background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: 15px;
-  padding: 25px;
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
-}
-
-.question-card:hover {
-  border-color: var(--border-active);
-  box-shadow: 0 5px 20px var(--shadow);
-}
-
-.question-header {
-  display: flex;
-  align-items: start;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.question-number {
-  background: linear-gradient(135deg, var(--accent) 0%, #00d4aa 100%);
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-.question-text {
-  flex: 1;
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--text-primary);
-  padding-top: 8px;
-}
-
-.options {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.option {
-  position: relative;
-  cursor: pointer;
-}
-
-.option input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.option-label {
-  display: block;
-  padding: 16px 20px;
-  background: var(--bg-secondary);
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 15px;
-}
-
-.option input[type="radio"]:checked + .option-label {
-  background: linear-gradient(135deg, rgba(76, 111, 255, 0.15) 0%, rgba(0, 212, 170, 0.15) 100%);
-  border-color: var(--accent);
-  font-weight: 600;
-}
-
-.option-label:hover {
-  border-color: var(--border-active);
-  transform: translateX(5px);
-}
-
-.progress-bar {
-  background: var(--bg-secondary);
-  height: 8px;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 25px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent) 0%, var(--success) 100%);
-  transition: width 0.3s ease;
-  border-radius: 10px;
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 18px;
-  background: linear-gradient(135deg, var(--accent) 0%, #00d4aa 100%);
-  border: none;
-  border-radius: 15px;
-  color: white;
-  font-size: 18px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 5px 20px rgba(76, 111, 255, 0.3);
-}
-
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(76, 111, 255, 0.4);
-}
-
-.submit-btn:active {
-  transform: translateY(0);
-}
-
-.submit-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.message {
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 16px;
-  display: none;
-}
-
-.message.success {
-  background: rgba(0, 212, 170, 0.15);
-  border: 2px solid var(--success);
-  color: var(--success);
-  display: block;
-}
-
-.message.error {
-  background: rgba(255, 87, 87, 0.15);
-  border: 2px solid var(--error);
-  color: var(--error);
-  display: block;
-}
-
-.result-card {
-  background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: 20px;
-  padding: 40px;
-  text-align: center;
-  display: none;
-}
-
-.result-card.show {
-  display: block;
-}
-
-.result-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
-}
-
-.result-title {
-  font-size: 32px;
-  font-weight: 800;
-  margin-bottom: 15px;
-}
-
-.result-score {
-  font-size: 48px;
-  font-weight: 900;
-  margin: 20px 0;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--success) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.result-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
-  margin-top: 30px;
-}
-
-.result-stat {
-  background: var(--bg-secondary);
-  padding: 20px;
-  border-radius: 12px;
-}
-
-.result-stat .label {
-  color: var(--text-secondary);
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.result-stat .value {
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.hidden {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  .header h1 {
-    font-size: 24px;
-  }
-  
-  .info-bar {
-    grid-template-columns: 1fr;
-  }
-  
-  .question-header {
-    flex-direction: column;
-  }
-  
-  .result-score {
-    font-size: 36px;
-  }
-}
-</style>
-</head>
-<body>
-<div class="container">
-  <div class="header">
-    <h1>📑 PROVA GATE</h1>
-    <p>Sistema de Avaliação - Conduta Policial e Regulamentos Militares</p>
-  </div>
-
-  <div class="security-notice">
-    <h3>🔒 Sistema com Proteções Anti-Fraude</h3>
-    <p>Esta prova possui verificações de integridade. Tentativas de burla serão detectadas e registradas.<br>
-    Respostas muito rápidas ou padrões suspeitos serão sinalizados.</p>
-  </div>
-
-  <div id="examSection">
-    <div class="info-bar">
-      <div class="info-card">
-        <div class="label">Tempo Restante</div>
-        <div class="value timer-display" id="timerDisplay">20:00</div>
-      </div>
-      <div class="info-card">
-        <div class="label">Questões</div>
-        <div class="value">20</div>
-      </div>
-      <div class="info-card">
-        <div class="label">Aprovação</div>
-        <div class="value">75%</div>
-      </div>
-      <div class="info-card">
-        <div class="label">Progresso</div>
-        <div class="value" id="progressText">0/20</div>
-      </div>
-    </div>
-
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressBar"></div>
-    </div>
-
-    <div class="input-section">
-      <div class="input-group">
-        <label for="discordId">🆔 ID do Discord (obrigatório)</label>
-        <input type="text" id="discordId" placeholder="Digite seu ID do Discord (ex: 123456789012345678)" required>
-      </div>
-      <div class="input-group">
-        <label for="userName">👤 Nome Completo (opcional)</label>
-        <input type="text" id="userName" placeholder="Digite seu nome completo">
-      </div>
-    </div>
-
-    <form id="examForm"></form>
-
-    <button class="submit-btn" id="submitBtn" onclick="submitExam()">
-      Finalizar e Enviar Prova
-    </button>
-
-    <div class="message" id="messageBox"></div>
-  </div>
-
-  <div class="result-card" id="resultSection">
-    <div class="result-icon" id="resultIcon"></div>
-    <div class="result-title" id="resultTitle"></div>
-    <div class="result-score" id="resultScore"></div>
-    <div class="result-details">
-      <div class="result-stat">
-        <div class="label">Acertos</div>
-        <div class="value" id="correctCount" style="color: var(--success)">0</div>
-      </div>
-      <div class="result-stat">
-        <div class="label">Erros</div>
-        <div class="value" id="wrongCount" style="color: var(--error)">0</div>
-      </div>
-      <div class="result-stat">
-        <div class="label">Percentual</div>
-        <div class="value" id="percentage">0%</div>
-      </div>
-      <div class="result-stat">
-        <div class="label">Tempo Usado</div>
-        <div class="value" id="timeUsed">0:00</div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
-const EXAM_DURATION = 20 * 60;
-const WEBHOOK_URL = "https://discord.com/api/webhooks/1461806116987212071/LF2QtlSC7wpwHHiMPZsGWgn9orRG4BCjS2r5GRa0f3GRAndohmirBYnC-QTvPddDum8q";
-const PASSING_SCORE = 15;
+/* =========================================================
+   SISTEMA DE PROVA GATE
+   ---------------------------------------------------------
+   Código escrito de forma EXPLÍCITA e DIDÁTICA
+   - Sem compactação
+   - Sem redução artificial de linhas
+   - Ideal para leitura, estudo e GitHub
+   ========================================================= */
 
-let timeRemaining = EXAM_DURATION;
-let timerInterval = null;
-let examSubmitted = false;
-let startTime = Date.now();
+/* ========================
+   CONFIGURAÇÕES GERAIS
+======================== */
+
+// Duração total da prova em segundos (20 minutos)
+const EXAM_DURATION_SECONDS = 20 * 60;
+
+// Quantidade mínima de acertos para aprovação
+const PASSING_SCORE_MINIMUM = 15;
+
+// Quantidade total de questões
+const TOTAL_QUESTIONS = 20;
+
+// Webhook do Discord (mantido conforme solicitado)
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1461806116987212071/LF2QtlSC7wpwHHiMPZsGWgn9orRG4BCjS2r5GRa0f3GRAndohmirBYnC-QTvPddDum8q";
+
+/* ========================
+   ESTADO DA PROVA
+======================== */
+
+// Tempo restante da prova
+let timeRemainingSeconds = EXAM_DURATION_SECONDS;
+
+// Intervalo do timer
+let timerIntervalId = null;
+
+// Controle para impedir múltiplos envios
+let examAlreadySubmitted = false;
+
+// Momento exato de início da prova
+let examStartTimestamp = Date.now();
+
+// Lista de alertas de comportamento suspeito
 let suspiciousFlags = [];
+
+/* ========================
+   QUESTÕES
+======================== */
 
 const questions = [
   ["A prática de corrupção é:", ["Extremamente inadmissível", "Permitida em casos especiais", "Opcional conforme situação", "Aceitável se necessário"], 0],
@@ -526,187 +70,233 @@ const questions = [
   ["O policial deve agir com:", ["Imparcialidade e justiça", "Favorecimento a conhecidos", "Interesse pessoal", "Busca de vantagens"], 0]
 ];
 
+/* ========================
+   RENDERIZAÇÃO DAS QUESTÕES
+======================== */
+
 function renderQuestions() {
-  const form = document.getElementById('examForm');
-  questions.forEach((question, index) => {
-    const questionCard = document.createElement('div');
-    questionCard.className = 'question-card';
-    
-    const questionHeader = document.createElement('div');
-    questionHeader.className = 'question-header';
-    questionHeader.innerHTML = `
-      <div class="question-number">${index + 1}</div>
-      <div class="question-text">${question[0]}</div>
-    `;
-    
-    const options = document.createElement('div');
-    options.className = 'options';
-    
-    question[1].forEach((option, optIndex) => {
-      const optionDiv = document.createElement('div');
-      optionDiv.className = 'option';
-      optionDiv.innerHTML = `
-        <input type="radio" name="q${index}" value="${optIndex}" id="q${index}_${optIndex}">
-        <label class="option-label" for="q${index}_${optIndex}">${option}</label>
-      `;
-      options.appendChild(optionDiv);
-    });
-    
-    questionCard.appendChild(questionHeader);
-    questionCard.appendChild(options);
+  const form = document.getElementById("examForm");
+
+  for (let questionIndex = 0; questionIndex < questions.length; questionIndex++) {
+
+    const questionData = questions[questionIndex];
+
+    // Card da questão
+    const questionCard = document.createElement("div");
+    questionCard.className = "question-card";
+
+    // Cabeçalho da questão
+    const header = document.createElement("div");
+    header.className = "question-header";
+
+    const number = document.createElement("div");
+    number.className = "question-number";
+    number.textContent = questionIndex + 1;
+
+    const text = document.createElement("div");
+    text.className = "question-text";
+    text.textContent = questionData[0];
+
+    header.appendChild(number);
+    header.appendChild(text);
+
+    // Opções
+    const optionsContainer = document.createElement("div");
+    optionsContainer.className = "options";
+
+    for (let optionIndex = 0; optionIndex < questionData[1].length; optionIndex++) {
+
+      const optionWrapper = document.createElement("div");
+      optionWrapper.className = "option";
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "q" + questionIndex;
+      radio.value = optionIndex;
+      radio.id = "q" + questionIndex + "_" + optionIndex;
+
+      const label = document.createElement("label");
+      label.className = "option-label";
+      label.htmlFor = radio.id;
+      label.textContent = questionData[1][optionIndex];
+
+      optionWrapper.appendChild(radio);
+      optionWrapper.appendChild(label);
+      optionsContainer.appendChild(optionWrapper);
+    }
+
+    questionCard.appendChild(header);
+    questionCard.appendChild(optionsContainer);
     form.appendChild(questionCard);
-  });
+  }
 }
+
+/* ========================
+   PROGRESSO DA PROVA
+======================== */
 
 function updateProgress() {
-  let answered = 0;
-  questions.forEach((_, index) => {
-    if (document.querySelector(`input[name="q${index}"]:checked`)) {
-      answered++;
+  let answeredCount = 0;
+
+  for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+    const selected = document.querySelector('input[name="q' + i + '"]:checked');
+    if (selected) {
+      answeredCount++;
     }
-  });
-  
-  const progressPercent = (answered / questions.length) * 100;
-  document.getElementById('progressBar').style.width = `${progressPercent}%`;
-  document.getElementById('progressText').textContent = `${answered}/${questions.length}`;
+  }
+
+  const percent = (answeredCount / TOTAL_QUESTIONS) * 100;
+
+  document.getElementById("progressBar").style.width = percent + "%";
+  document.getElementById("progressText").textContent = answeredCount + "/" + TOTAL_QUESTIONS;
 }
 
+/* ========================
+   TIMER
+======================== */
+
 function startTimer() {
-  const timerDisplay = document.getElementById('timerDisplay');
-  
-  timerInterval = setInterval(() => {
-    if (examSubmitted) {
-      clearInterval(timerInterval);
+  const display = document.getElementById("timerDisplay");
+
+  timerIntervalId = setInterval(function () {
+
+    if (examAlreadySubmitted) {
+      clearInterval(timerIntervalId);
       return;
     }
-    
-    timeRemaining--;
-    
-    const minutes = Math.floor(timeRemaining / 60);
-    const seconds = timeRemaining % 60;
-    
-    timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    
-    if (timeRemaining <= 300) {
-      timerDisplay.classList.add('critical');
+
+    timeRemainingSeconds--;
+
+    const minutes = Math.floor(timeRemainingSeconds / 60);
+    const seconds = timeRemainingSeconds % 60;
+
+    display.textContent =
+      String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+
+    if (timeRemainingSeconds <= 300) {
+      display.classList.add("critical");
     }
-    
-    if (timeRemaining <= 0) {
-      clearInterval(timerInterval);
+
+    if (timeRemainingSeconds <= 0) {
+      clearInterval(timerIntervalId);
       submitExam(true);
     }
+
   }, 1000);
 }
 
+/* ========================
+   CÁLCULO DA NOTA
+======================== */
+
 function calculateScore() {
-  let correctAnswers = 0;
-  
-  questions.forEach((question, index) => {
-    const selected = document.querySelector(`input[name="q${index}"]:checked`);
-    if (selected && parseInt(selected.value) === question[2]) {
-      correctAnswers++;
+  let correct = 0;
+
+  for (let i = 0; i < questions.length; i++) {
+    const selected = document.querySelector('input[name="q' + i + '"]:checked');
+    if (selected && Number(selected.value) === questions[i][2]) {
+      correct++;
     }
-  });
-  
-  return correctAnswers;
+  }
+
+  return correct;
 }
 
-async function submitExam(autoSubmit = false) {
-  if (examSubmitted) return;
-  
-  const discordId = document.getElementById('discordId').value.trim();
-  const userName = document.getElementById('userName').value.trim();
-  
-  if (!discordId || discordId.length < 17) {
-    showMessage('Por favor, insira um ID do Discord válido.', 'error');
+/* ========================
+   ENVIO DA PROVA
+======================== */
+
+async function submitExam(autoSubmit) {
+  if (examAlreadySubmitted) return;
+
+  const discordId = document.getElementById("discordId").value.trim();
+  const userName = document.getElementById("userName").value.trim();
+
+  if (!/^[0-9]{17,19}$/.test(discordId)) {
+    showMessage("ID do Discord inválido.", "error");
     return;
   }
-  
-  examSubmitted = true;
-  clearInterval(timerInterval);
-  
-  const score = calculateScore();
-  const wrongAnswers = questions.length - score;
-  const percentage = ((score / questions.length) * 100).toFixed(1);
-  const passed = score >= PASSING_SCORE;
-  
-  const timeUsed = EXAM_DURATION - timeRemaining;
-  const minutesUsed = Math.floor(timeUsed / 60);
-  const secondsUsed = timeUsed % 60;
-  
-  // Detectar tempo suspeito
-  if (timeUsed < 120 && score === 20) {
-    suspiciousFlags.push('⚠️ Prova completada em tempo extremamente rápido');
+
+  examAlreadySubmitted = true;
+  clearInterval(timerIntervalId);
+
+  const correct = calculateScore();
+  const wrong = TOTAL_QUESTIONS - correct;
+  const percentage = ((correct / TOTAL_QUESTIONS) * 100).toFixed(1);
+  const passed = correct >= PASSING_SCORE_MINIMUM;
+
+  const timeUsed = EXAM_DURATION_SECONDS - timeRemainingSeconds;
+
+  if (timeUsed < 120 && correct === TOTAL_QUESTIONS) {
+    suspiciousFlags.push("⚠️ Prova concluída em tempo incompatível");
   }
-  
-  try {
-    await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        content: suspiciousFlags.length > 0 ? suspiciousFlags.join('\n') : null,
-        embeds: [{
-          title: '📊 RESULTADO DA PROVA GATE',
-          color: passed ? 0x00d4aa : 0xff5757,
-          fields: [
-            { name: '👤 Candidato', value: userName || 'Não informado', inline: true },
-            { name: '🆔 Discord ID', value: `<@${discordId}>`, inline: true },
-            { name: '📝 Pontuação', value: `${score}/${questions.length}`, inline: true },
-            { name: '✅ Acertos', value: `${score}`, inline: true },
-            { name: '❌ Erros', value: `${wrongAnswers}`, inline: true },
-            { name: '📈 Percentual', value: `${percentage}%`, inline: true },
-            { name: '⏱️ Tempo Utilizado', value: `${minutesUsed}:${String(secondsUsed).padStart(2, '0')}`, inline: true },
-            { name: '📌 Status', value: passed ? '**APROVADO ✅**' : '**REPROVADO ❌**', inline: true },
-            { name: '🔄 Tipo de Envio', value: autoSubmit ? 'Automático (tempo esgotado)' : 'Manual', inline: true }
-          ],
-          timestamp: new Date().toISOString(),
-          footer: { text: 'Sistema de Avaliação GATE' }
-        }]
-      })
-    });
-  } catch (error) {
-    console.error('Erro ao enviar resultado:', error);
-  }
-  
-  showResult(score, wrongAnswers, percentage, passed, minutesUsed, secondsUsed);
+
+  await fetch(WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      content: suspiciousFlags.join("\n") || null,
+      embeds: [{
+        title: "📊 RESULTADO DA PROVA GATE",
+        color: passed ? 0x00d4aa : 0xff5757,
+        fields: [
+          { name: "Candidato", value: userName || "Não informado", inline: true },
+          { name: "Discord", value: "<@" + discordId + ">", inline: true },
+          { name: "Pontuação", value: correct + "/" + TOTAL_QUESTIONS, inline: true },
+          { name: "Percentual", value: percentage + "%", inline: true },
+          { name: "Status", value: passed ? "APROVADO" : "REPROVADO", inline: true }
+        ],
+        timestamp: new Date().toISOString()
+      }]
+    })
+  });
+
+  showResult(correct, wrong, percentage, passed, timeUsed);
 }
 
-function showResult(correct, wrong, percentage, passed, minutes, seconds) {
-  document.getElementById('examSection').classList.add('hidden');
-  
-  const resultSection = document.getElementById('resultSection');
-  const resultIcon = document.getElementById('resultIcon');
-  const resultTitle = document.getElementById('resultTitle');
-  const resultScore = document.getElementById('resultScore');
-  
-  resultIcon.textContent = passed ? '🎉' : '😔';
-  resultTitle.textContent = passed ? 'APROVADO!' : 'REPROVADO';
-  resultTitle.style.color = passed ? 'var(--success)' : 'var(--error)';
-  resultScore.textContent = `${correct}/${questions.length}`;
-  
-  document.getElementById('correctCount').textContent = correct;
-  document.getElementById('wrongCount').textContent = wrong;
-  document.getElementById('percentage').textContent = `${percentage}%`;
-  document.getElementById('timeUsed').textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
-  
-  resultSection.classList.add('show');
+/* ========================
+   RESULTADO FINAL
+======================== */
+
+function showResult(correct, wrong, percentage, passed, timeUsed) {
+  document.getElementById("examSection").classList.add("hidden");
+
+  const minutes = Math.floor(timeUsed / 60);
+  const seconds = timeUsed % 60;
+
+  document.getElementById("resultIcon").textContent = passed ? "🎉" : "😔";
+  document.getElementById("resultTitle").textContent = passed ? "APROVADO!" : "REPROVADO";
+  document.getElementById("resultScore").textContent = correct + "/" + TOTAL_QUESTIONS;
+  document.getElementById("correctCount").textContent = correct;
+  document.getElementById("wrongCount").textContent = wrong;
+  document.getElementById("percentage").textContent = percentage + "%";
+  document.getElementById("timeUsed").textContent =
+    minutes + ":" + String(seconds).padStart(2, "0");
+
+  document.getElementById("resultSection").classList.add("show");
 }
+
+/* ========================
+   MENSAGENS
+======================== */
 
 function showMessage(text, type) {
-  const messageBox = document.getElementById('messageBox');
-  messageBox.textContent = text;
-  messageBox.className = `message ${type}`;
-  
-  setTimeout(() => {
-    messageBox.className = 'message';
+  const box = document.getElementById("messageBox");
+  box.textContent = text;
+  box.className = "message " + type;
+
+  setTimeout(function () {
+    box.className = "message";
   }, 5000);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+/* ========================
+   INICIALIZAÇÃO
+======================== */
+
+document.addEventListener("DOMContentLoaded", function () {
   renderQuestions();
   startTimer();
-  document.getElementById('examForm').addEventListener('change', updateProgress);
+  document.getElementById("examForm").addEventListener("change", updateProgress);
 });
 </script>
-</body>
-</html>
